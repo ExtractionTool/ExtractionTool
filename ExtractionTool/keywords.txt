@@ -1,0 +1,1 @@
+id,key,location,gps,password,pwrd,login,uid,user,device,latitude,longitude,api,finance,stock,listener

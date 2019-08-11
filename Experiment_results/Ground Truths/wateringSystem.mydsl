@@ -1,0 +1,29 @@
+EDFD WateringSystemEDFD [
+	assets:
+		Asset PortNbr values: [H C] source: WateringSystem targets: Server,
+		Asset AllLoggedValues values: [H C] source: MoistureController targets: Server,
+		Asset CurrentMoisture values: [H C] source: MoistureController targets: WateringSystem
+		
+	elements:
+		Process Server [
+			responsibilities: [AllLoggedValues Forward:: AllLoggedValues],
+								[PortNbr Forward:: PortNbr]
+			assets: AllLoggedValues, PortNbr
+			incoming flows: "WateringSystem.getIndexPage", "WateringSystem.setupServer"
+		],
+		
+		Process MoistureController [
+			responsibilities: [CurrentMoisture Forward:: CurrentMoisture],
+								[AllLoggedValues Forward:: AllLoggedValues]
+			assets: CurrentMoisture, AllLoggedValues
+			outgoing flows: getAllLoggedValues [num: 2 assets: AllLoggedValues targets: WateringSystem], getCurrentMoisture [num: 1 assets: CurrentMoisture targets: WateringSystem]
+		],
+		Process WateringSystem [
+			responsibilities: [CurrentMoisture Store::],
+								[AllLoggedValues Forward:: AllLoggedValues],
+								[PortNbr Forward:: PortNbr]
+			assets: CurrentMoisture, AllLoggedValues, PortNbr
+			incoming flows: "MoistureController.getAllLoggedValues", "MoistureController.getCurrentMoisture"
+			outgoing flows: getIndexPage [num: 3 assets: AllLoggedValues targets: Server], setupServer [num: 4 assets: PortNbr targets: Server]
+		]
+]

@@ -1,0 +1,39 @@
+EDFD Access1[
+ assets:
+     Asset setupServerInt values: [H C] source: ServerSetup targets: 
+     Asset setupServerPort values: [H C] source: ServerSetup targets: 
+     Asset NotifyAzureMessage values: [H C] source: Utils targets: 
+     Asset writeMessageString values: [H C] source: LcdSensor targets: 
+     Asset writeMessageMessage values: [H C] source: LcdSensor targets: 
+ elements:
+     Process AccessControl[
+         responsibilities: [setupServerInt Store::],
+[setupServerPort Store::]
+         assets: setupServerInt, setupServerPort
+         incoming flows: "ServerSetup.ServerSetupsetupServer"
+         outgoing flows: 
+     ], 
+     Process Utils[
+         responsibilities: [NotifyAzureMessage Forward:: NotifyAzureMessage]
+         assets: setupServerInt, setupServerPort, NotifyAzureMessage
+         incoming flows: 
+         outgoing flows: UtilsNotifyAzure [num: 2 assets: NotifyAzureMessage, targets: ServerSetup]
+     ], 
+     Process LcdSensor[
+         responsibilities: [writeMessageString Forward:: writeMessageString],
+[writeMessageMessage Forward:: writeMessageMessage]
+         assets: setupServerInt, setupServerPort, NotifyAzureMessage, writeMessageString, writeMessageMessage
+         incoming flows: 
+         outgoing flows: LcdSensorwriteMessage [num: 3 assets: writeMessageString, writeMessageMessage, targets: ServerSetup]
+     ], 
+     Process ServerSetup[
+         responsibilities: [NotifyAzureMessage Store::],
+[writeMessageString Store::],
+[writeMessageMessage Store::],
+[setupServerInt Forward:: setupServerInt],
+[setupServerPort Forward:: setupServerPort]
+         assets: setupServerInt, setupServerPort, NotifyAzureMessage, writeMessageString, writeMessageMessage
+         incoming flows: "Utils.UtilsNotifyAzure", "LcdSensor.LcdSensorwriteMessage"
+         outgoing flows: ServerSetupsetupServer [num: 1 assets: setupServerInt, setupServerPort, targets: AccessControl]
+     ], 
+]

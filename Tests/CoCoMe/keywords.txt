@@ -1,0 +1,1 @@
+bar,code,scan,event,start,sale,total,change,finish,product,with,stock,item,price

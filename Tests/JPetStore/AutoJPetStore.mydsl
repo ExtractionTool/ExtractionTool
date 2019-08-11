@@ -1,0 +1,68 @@
+EDFD Autojpetstore[
+ assets:
+     Asset setItemItem values: [H C] source: CartItem targets: 
+     Asset getOrderOrderid values: [H C] source: OrderService targets: 
+     Asset addItemItem values: [H C] source: Cart targets: 
+     Asset addItemBoolean values: [H C] source: Cart targets: 
+     Asset addItemIsinstock values: [H C] source: Cart targets: 
+     Asset initOrderAccount values: [H C] source: Order targets: 
+     Asset LineItemImplements values: [H C] source: LineItem targets: 
+     Asset LineItemSerializable values: [H C] source: LineItem targets: 
+ elements:
+     Process OrderService[
+         responsibilities: [getOrderOrderid Forward:: getOrderOrderid]
+         assets: getOrderOrderid
+         incoming flows: 
+         outgoing flows: OrderServicegetOrder [num: 2 assets: getOrderOrderid, targets: CartItem]
+     ], 
+     Process OrderActionBean[
+         responsibilities: [setItemItem Store::],
+[addItemItem Store::],
+[addItemBoolean Store::],
+[addItemIsinstock Store::]
+         assets: getOrderOrderid, setItemItem, addItemItem, addItemBoolean, addItemIsinstock
+         incoming flows: "CartItem.CartItemsetItem", "Cart.CartaddItem"
+         outgoing flows: 
+     ], 
+     Process CartItem[
+         responsibilities: [getOrderOrderid Store::],
+[setItemItem Forward:: setItemItem]
+         assets: getOrderOrderid, setItemItem, addItemItem, addItemBoolean, addItemIsinstock
+         incoming flows: "OrderService.OrderServicegetOrder"
+         outgoing flows: CartItemsetItem [num: 1 assets: setItemItem, targets: OrderActionBean]
+     ], 
+     Process CartActionBean[
+         responsibilities: [LineItemImplements Store::],
+[LineItemSerializable Store::]
+         assets: getOrderOrderid, setItemItem, addItemItem, addItemBoolean, addItemIsinstock, LineItemImplements, LineItemSerializable
+         incoming flows: "LineItem.LineItemLineItem"
+         outgoing flows: 
+     ], 
+     Process Account[
+         responsibilities: [initOrderAccount Store::]
+         assets: getOrderOrderid, setItemItem, addItemItem, addItemBoolean, addItemIsinstock, LineItemImplements, LineItemSerializable, initOrderAccount
+         incoming flows: "Order.OrderinitOrder"
+         outgoing flows: 
+     ], 
+     Process Cart[
+         responsibilities: [addItemItem Forward:: addItemItem],
+[addItemBoolean Forward:: addItemBoolean],
+[addItemIsinstock Forward:: addItemIsinstock]
+         assets: getOrderOrderid, setItemItem, addItemItem, addItemBoolean, addItemIsinstock, LineItemImplements, LineItemSerializable, initOrderAccount
+         incoming flows: 
+         outgoing flows: CartaddItem [num: 3 assets: addItemItem, addItemBoolean, addItemIsinstock, targets: OrderActionBean]
+     ], 
+     Process LineItem[
+         responsibilities: [LineItemImplements Forward:: LineItemImplements],
+[LineItemSerializable Forward:: LineItemSerializable]
+         assets: getOrderOrderid, setItemItem, addItemItem, addItemBoolean, addItemIsinstock, LineItemImplements, LineItemSerializable, initOrderAccount
+         incoming flows: 
+         outgoing flows: LineItemLineItem [num: 5 assets: LineItemImplements, LineItemSerializable, targets: CartActionBean]
+     ], 
+     Process Order[
+         responsibilities: [initOrderAccount Forward:: initOrderAccount]
+         assets: getOrderOrderid, setItemItem, addItemItem, addItemBoolean, addItemIsinstock, LineItemImplements, LineItemSerializable, initOrderAccount
+         incoming flows: 
+         outgoing flows: OrderinitOrder [num: 4 assets: initOrderAccount, targets: Account]
+     ], 
+]

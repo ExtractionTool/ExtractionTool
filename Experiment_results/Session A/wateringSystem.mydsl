@@ -1,0 +1,37 @@
+EDFD WateringSystemDFD [
+	assets:
+		Asset TwilioId values: [H C] source: WateringSystem targets: TwilioAPI,
+		Asset TwilioToken values: [H C] source: WateringSystem targets: TwilioAPI,
+		Asset TwilioFromNumber values: [H C] source: WateringSystem targets: TwilioAPI,
+		Asset TwilioToNumber values: [H C] source: WateringSystem targets: TwilioAPI,
+		Asset TwilioMessage values: [L C] source: WateringSystem targets: TwilioAPI,
+		Asset TwilioAccount values: [H C] source: TwilioAPI targets: WateringSystem,
+		
+		Asset AzureServerUrl values: [M C] source: WateringSystem targets: HTTPConnection,
+		Asset AzureToken values: [H C] source: WateringSystem targets: HTTPConnection,
+		Asset AzureMessage values: [L C] source: WateringSystem targets: HTTPConnection
+	elements:
+		Process WateringSystem [
+			responsibilities: [TwilioAccount Store::TwilioAccount], [TwilioId Store::TwilioId], [TwilioToken Store::TwilioToken], [TwilioFromNumber Store::TwilioFromNumber], [TwilioToNumber Store::TwilioToNumber], [TwilioMessage Store::TwilioMessage]
+			assets: TwilioId, TwilioToken, TwilioFromNumber, TwilioToNumber, TwilioMessage, TwilioAccount
+			incoming flows: "TwilioAPI.getAccount"
+			outgoing flows: newTwilioRestClient	[num: 1 assets: TwilioId, TwilioToken targets: TwilioAPI ], createSMS [num: 3 assets: TwilioFromNumber, TwilioToNumber, TwilioMessage targets: TwilioAPI ], setRequestProperty [num: 5 assets: AzureToken, AzureMessage], openConnection [num: 4 assets: AzureServerUrl]
+		],
+		Process TwilioAPI [
+			responsibilities: [TwilioAccount Store::TwilioAccount], [TwilioId Store::TwilioId], [TwilioToken Store::TwilioToken], [TwilioFromNumber Store::TwilioFromNumber], [TwilioToNumber Store::TwilioToNumber], [TwilioMessage Store::TwilioMessage]
+			assets: TwilioId, TwilioToken, TwilioFromNumber, TwilioToNumber, TwilioMessage, TwilioAccount
+			incoming flows: "WateringSystem.newTwilioRestClient", "WateringSystem.createSMS"
+			outgoing flows: getAccount	[num: 2 assets: TwilioAccount targets: WateringSystem ]
+		],
+		Process HTTPConnection [
+			responsibilities: [AzureServerUrl Store::AzureServerUrl], [AzureToken Store::AzureToken], [AzureMessage Store::AzureMessage]
+			assets: AzureServerUrl, AzureToken, AzureMessage, TwilioToken
+			incoming flows: "WateringSystem.setRequestProperty", "WateringSystem.openConnection"
+		]
+		
+		
+		
+	
+	
+	
+]

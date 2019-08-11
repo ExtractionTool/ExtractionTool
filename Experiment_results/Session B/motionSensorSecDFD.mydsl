@@ -1,0 +1,15 @@
+EDFD MotionSensorSecDFD [
+	assets:
+		Asset Message values: [L C] source: MotionActivityHandling targets: ScreenActivity
+	elements:
+		Process MotionActivityHandling[
+			responsibilities: [Message Forward::Message]
+			assets: Message
+			outgoing flows: writeMessage [num: 1 assets: Message targets: ScreenActivity]
+		],
+		Process ScreenActivity[
+			responsibilities: [Message Store::Message]
+			assets: Message
+			incoming flows: "MotionActivityHandling.writeMessage" 
+		]		
+]

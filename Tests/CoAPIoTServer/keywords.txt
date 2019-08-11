@@ -1,0 +1,1 @@
+data,device,log,new,configuration,coap,session,token,owner,serial,number

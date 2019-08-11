@@ -1,0 +1,33 @@
+EDFD Access1[
+ assets:
+     Asset SetupServerPort values: [H C] source: ServerSetup targets: AccessControl,
+     Asset NotifyAzureMessage values: [H C] source: Utils targets: Azure,
+     Asset WriteMessageString values: [H C] source: LcdSensor targets: Azure
+ elements:
+     Process AccessControl[
+         responsibilities:[SetupServerPort Store::SetupServerPort]
+         assets: SetupServerPort
+         incoming flows: "ServerSetup.ServerSetupsetupServer"
+     ], 
+     Process Utils[
+         responsibilities: [NotifyAzureMessage Forward:: NotifyAzureMessage]
+         assets: NotifyAzureMessage
+         incoming flows: "LcdSensor.LcdSensorwriteMessage"
+         outgoing flows: UtilsNotifyAzure [num: 2 assets: NotifyAzureMessage targets: Azure]
+     ], 
+     Process Azure[
+         responsibilities: [NotifyAzureMessage Store:: NotifyAzureMessage]
+         assets: NotifyAzureMessage
+         incoming flows: "Utils.UtilsNotifyAzure"
+     ], 
+     Process LcdSensor[
+         responsibilities: [WriteMessageString Forward:: WriteMessageString], [WriteMessageString Store:: WriteMessageString]
+         assets: WriteMessageString
+         outgoing flows: LcdSensorwriteMessage [num: 3 assets: WriteMessageString targets: Azure]
+     ], 
+     Process ServerSetup[
+		 responsibilities:	[SetupServerPort Forward:: SetupServerPort]
+         assets: SetupServerPort
+         outgoing flows: ServerSetupsetupServer [num: 1 assets: SetupServerPort targets: AccessControl]
+     ]
+]

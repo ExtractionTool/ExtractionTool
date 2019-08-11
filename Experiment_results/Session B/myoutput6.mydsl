@@ -1,0 +1,38 @@
+EDFD Myoutput6[
+ assets:
+     Asset sendMessageWithTwilioString values: [H C] source: Utils targets: FlowSensor
+     Asset sendMessageWithTwilioBody values: [H C] source: Utils targets: FlowSensor
+     Asset sendMessageWithTwilioProperties values: [H C] source: Utils targets: FlowSensor
+     Asset sendMessageWithTwilioConfig values: [H C] source: Utils targets: FlowSensor
+     Asset alertIfFlowStateDoesntMatchSettingBoolean values: [H C] source: FlowSensor targets: Utils
+     Asset alertIfFlowStateDoesntMatchSettingShouldwaterpumpbeon values: [H C] source: FlowSensor targets: Utils
+     Asset alertIfFlowStateDoesntMatchSettingProperties values: [H C] source: FlowSensor targets: Utils
+     Asset alertIfFlowStateDoesntMatchSettingConfig values: [H C] source: FlowSensor targets: Utils
+ elements:
+     Process Utils[
+         responsibilities: [alertIfFlowStateDoesntMatchSettingBoolean Store::],
+[alertIfFlowStateDoesntMatchSettingShouldwaterpumpbeon Store::],
+[alertIfFlowStateDoesntMatchSettingProperties Store::],
+[alertIfFlowStateDoesntMatchSettingConfig Store::],
+[sendMessageWithTwilioString Forward:: sendMessageWithTwilioString],
+[sendMessageWithTwilioBody Forward:: sendMessageWithTwilioBody],
+[sendMessageWithTwilioProperties Forward:: sendMessageWithTwilioProperties],
+[sendMessageWithTwilioConfig Forward:: sendMessageWithTwilioConfig]
+         assets: sendMessageWithTwilioString, sendMessageWithTwilioBody, sendMessageWithTwilioProperties, sendMessageWithTwilioConfig, alertIfFlowStateDoesntMatchSettingBoolean, alertIfFlowStateDoesntMatchSettingShouldwaterpumpbeon, alertIfFlowStateDoesntMatchSettingProperties, alertIfFlowStateDoesntMatchSettingConfig
+         incoming flows: "FlowSensor.FlowSensoralertIfFlowStateDoesntMatchSetting"
+         outgoing flows: UtilssendMessageWithTwilio [num: 1 assets: sendMessageWithTwilioString, sendMessageWithTwilioBody, sendMessageWithTwilioProperties, sendMessageWithTwilioConfig, targets: FlowSensor]
+     ], 
+     Process FlowSensor[
+         responsibilities: [sendMessageWithTwilioString Store::],
+[sendMessageWithTwilioBody Store::],
+[sendMessageWithTwilioProperties Store::],
+[sendMessageWithTwilioConfig Store::],
+[alertIfFlowStateDoesntMatchSettingBoolean Forward:: alertIfFlowStateDoesntMatchSettingBoolean],
+[alertIfFlowStateDoesntMatchSettingShouldwaterpumpbeon Forward:: alertIfFlowStateDoesntMatchSettingShouldwaterpumpbeon],
+[alertIfFlowStateDoesntMatchSettingProperties Forward:: alertIfFlowStateDoesntMatchSettingProperties],
+[alertIfFlowStateDoesntMatchSettingConfig Forward:: alertIfFlowStateDoesntMatchSettingConfig]
+         assets: sendMessageWithTwilioString, sendMessageWithTwilioBody, sendMessageWithTwilioProperties, sendMessageWithTwilioConfig, alertIfFlowStateDoesntMatchSettingBoolean, alertIfFlowStateDoesntMatchSettingShouldwaterpumpbeon, alertIfFlowStateDoesntMatchSettingProperties, alertIfFlowStateDoesntMatchSettingConfig
+         incoming flows: "Utils.UtilssendMessageWithTwilio"
+         outgoing flows: FlowSensoralertIfFlowStateDoesntMatchSetting [num: 2 assets: alertIfFlowStateDoesntMatchSettingBoolean, alertIfFlowStateDoesntMatchSettingShouldwaterpumpbeon, alertIfFlowStateDoesntMatchSettingProperties, alertIfFlowStateDoesntMatchSettingConfig, targets: Utils]
+     ], 
+]

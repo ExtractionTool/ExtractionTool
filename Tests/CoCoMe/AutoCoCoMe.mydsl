@@ -1,0 +1,29 @@
+EDFD Autococome[
+ assets:
+     Asset startRmiRegistryFinal values: [H C] source: RmiRegistryLauncherMain targets: 
+     Asset startRmiRegistryString values: [H C] source: RmiRegistryLauncherMain targets: 
+     Asset startRmiRegistryPortnumber values: [H C] source: RmiRegistryLauncherMain targets: 
+     Asset startRmiRegistryThrows values: [H C] source: RmiRegistryLauncherMain targets: 
+     Asset startRmiRegistryRemoteexception values: [H C] source: RmiRegistryLauncherMain targets: 
+ elements:
+     Process RmiRegistryLauncherMain[
+         responsibilities: [startRmiRegistryFinal Forward:: startRmiRegistryFinal],
+[startRmiRegistryString Forward:: startRmiRegistryString],
+[startRmiRegistryPortnumber Forward:: startRmiRegistryPortnumber],
+[startRmiRegistryThrows Forward:: startRmiRegistryThrows],
+[startRmiRegistryRemoteexception Forward:: startRmiRegistryRemoteexception]
+         assets: startRmiRegistryFinal, startRmiRegistryString, startRmiRegistryPortnumber, startRmiRegistryThrows, startRmiRegistryRemoteexception
+         incoming flows: 
+         outgoing flows: RmiRegistryLauncherMainstartRmiRegistry [num: 1 assets: startRmiRegistryFinal, startRmiRegistryString, startRmiRegistryPortnumber, startRmiRegistryThrows, startRmiRegistryRemoteexception, targets: IStoreQuery]
+     ], 
+     Process IStoreQuery[
+         responsibilities: [startRmiRegistryFinal Store::],
+[startRmiRegistryString Store::],
+[startRmiRegistryPortnumber Store::],
+[startRmiRegistryThrows Store::],
+[startRmiRegistryRemoteexception Store::]
+         assets: startRmiRegistryFinal, startRmiRegistryString, startRmiRegistryPortnumber, startRmiRegistryThrows, startRmiRegistryRemoteexception
+         incoming flows: "RmiRegistryLauncherMain.RmiRegistryLauncherMainstartRmiRegistry"
+         outgoing flows: 
+     ], 
+]

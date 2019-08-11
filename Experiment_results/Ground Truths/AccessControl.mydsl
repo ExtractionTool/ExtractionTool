@@ -1,0 +1,30 @@
+EDFD AccessControlSystem[
+	assets:
+		Asset MotionActivity values: [H C] source: MotionSensor targets: AccessControl,
+		Asset PortNbr values: [H C] source: AccessControl targets: Server,
+		Asset DisplayMessage values: [M C] source: MotionSensor targets: LcdDisplayWriteMessage
+	elements:
+		Process Server[
+			responsibilities: [PortNbr Store::]
+			assets: PortNbr
+			incoming flows: "AccessControl.setupServer"
+		],
+		Process AccessControl[
+			responsibilities: [PortNbr Forward::PortNbr],
+								[MotionActivity Store::]
+			assets: PortNbr, MotionActivity
+			incoming flows: "MotionSensor.motionActivity"
+			outgoing flows: setupServer [num: 1 assets: PortNbr targets: Server]
+		],
+		Process MotionSensor[
+			responsibilities: [MotionActivity Forward::MotionActivity],
+								[DisplayMessage Forward:: DisplayMessage]
+			assets: MotionActivity, DisplayMessage
+			outgoing flows: motionActivity [num: 2 assets: MotionActivity targets: AccessControl], displayMessage [num: 3 assets: DisplayMessage targets: LcdDisplayWriteMessage]
+		],
+		Process LcdDisplayWriteMessage[
+			responsibilities: [DisplayMessage Store::]
+			assets: DisplayMessage
+			incoming flows: "MotionSensor.displayMessage"
+		]	
+]

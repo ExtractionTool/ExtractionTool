@@ -1,0 +1,138 @@
+EDFD Autodroidbench[
+ assets:
+     Asset onActivityResultInt values: [H C] source: MainActivity targets: 
+     Asset onActivityResultRequestcode values: [H C] source: MainActivity targets: 
+     Asset onActivityResultResultcode values: [H C] source: MainActivity targets: 
+     Asset onActivityResultIntent values: [H C] source: MainActivity targets: 
+     Asset onActivityResultData values: [H C] source: MainActivity targets: 
+     Asset onLocationChangedLocation values: [H C] source: MyLocationListener2 targets: 
+     Asset onLocationChangedArg0 values: [H C] source: MyLocationListener2 targets: 
+     Asset onLocationChangedLocation values: [H C] source: MyLocationListener targets: 
+     Asset onLocationChangedArg0 values: [H C] source: MyLocationListener targets: 
+     Asset onCreateBundle values: [H C] source: MainActivity targets: 
+     Asset onCreateSavedinstancestate values: [H C] source: MainActivity targets: 
+     Asset writeParcelString values: [H C] source: MainActivity targets: 
+     Asset writeParcelArg values: [H C] source: MainActivity targets: 
+     Asset onCreateBundle values: [H C] source: MainActivity targets: 
+     Asset onCreateSavedinstancestate values: [H C] source: MainActivity targets: 
+     Asset clickButtonView values: [H C] source: VirtualDispatch1 targets: 
+     Asset onCreateBundle values: [H C] source: FieldSensitivity3 targets: 
+     Asset onCreateSavedinstancestate values: [H C] source: FieldSensitivity3 targets: 
+     Asset onLocationChangedLocation values: [H C] source: MyLocationListener1 targets: 
+     Asset onLocationChangedArg0 values: [H C] source: MyLocationListener1 targets: 
+     Asset onClickArg0 values: [H C] source: Button1Listener targets: 
+ elements:
+     Process TelephonyManager[
+         responsibilities: [clickButtonView Store::],
+[onClickArg0 Store::]
+         assets: clickButtonView, onClickArg0
+         incoming flows: "VirtualDispatch1.VirtualDispatch1clickButton", "Button1Listener.Button1ListeneronClick"
+         outgoing flows: 
+     ], 
+     Process MyLocationListener1[
+         responsibilities: [onLocationChangedLocation Forward:: onLocationChangedLocation],
+[onLocationChangedArg0 Forward:: onLocationChangedArg0]
+         assets: clickButtonView, onClickArg0, onLocationChangedLocation, onLocationChangedArg0, onLocationChangedLocation, onLocationChangedArg0
+         incoming flows: "MyLocationListener2.MyLocationListener2onLocationChanged"
+         outgoing flows: MyLocationListener1onLocationChanged [num: 9 assets: onLocationChangedLocation, onLocationChangedArg0, targets: MyLocationListener]
+     ], 
+     Process MyLocationListener2[
+         responsibilities: [onActivityResultInt Store::],
+[onActivityResultRequestcode Store::],
+[onActivityResultResultcode Store::],
+[onActivityResultIntent Store::],
+[onActivityResultData Store::],
+[onLocationChangedLocation Forward:: onLocationChangedLocation],
+[onLocationChangedArg0 Forward:: onLocationChangedArg0]
+         assets: clickButtonView, onClickArg0, onLocationChangedLocation, onLocationChangedArg0, onLocationChangedLocation, onLocationChangedArg0, onActivityResultInt, onActivityResultRequestcode, onActivityResultResultcode, onActivityResultIntent, onActivityResultData
+         incoming flows: "MainActivity.MainActivityonActivityResult"
+         outgoing flows: MyLocationListener2onLocationChanged [num: 2 assets: onLocationChangedLocation, onLocationChangedArg0, targets: MyLocationListener1]
+     ], 
+     Process VirtualDispatch1[
+         responsibilities: [clickButtonView Forward:: clickButtonView]
+         assets: clickButtonView, onClickArg0, onLocationChangedLocation, onLocationChangedArg0, onLocationChangedLocation, onLocationChangedArg0, onActivityResultInt, onActivityResultRequestcode, onActivityResultResultcode, onActivityResultIntent, onActivityResultData
+         incoming flows: 
+         outgoing flows: VirtualDispatch1clickButton [num: 7 assets: clickButtonView, targets: TelephonyManager]
+     ], 
+     Process MyLocationListener[
+         responsibilities: [onLocationChangedLocation Forward:: onLocationChangedLocation],
+[onLocationChangedArg0 Forward:: onLocationChangedArg0]
+         assets: clickButtonView, onClickArg0, onLocationChangedLocation, onLocationChangedArg0, onLocationChangedLocation, onLocationChangedArg0, onActivityResultInt, onActivityResultRequestcode, onActivityResultResultcode, onActivityResultIntent, onActivityResultData, onLocationChangedLocation, onLocationChangedArg0
+         incoming flows: "MyLocationListener1.MyLocationListener1onLocationChanged"
+         outgoing flows: MyLocationListeneronLocationChanged [num: 3 assets: onLocationChangedLocation, onLocationChangedArg0, targets: HeadlinesFragment]
+     ], 
+     Process HeadlinesFragment[
+         responsibilities: [onLocationChangedLocation Store::],
+[onLocationChangedArg0 Store::]
+         assets: clickButtonView, onClickArg0, onLocationChangedLocation, onLocationChangedArg0, onLocationChangedLocation, onLocationChangedArg0, onActivityResultInt, onActivityResultRequestcode, onActivityResultResultcode, onActivityResultIntent, onActivityResultData, onLocationChangedLocation, onLocationChangedArg0
+         incoming flows: "MyLocationListener.MyLocationListeneronLocationChanged"
+         outgoing flows: 
+     ], 
+     Process MainActivity[
+         responsibilities: [onCreateBundle Forward:: onCreateBundle],
+[onCreateSavedinstancestate Forward:: onCreateSavedinstancestate]
+         assets: clickButtonView, onClickArg0, onLocationChangedLocation, onLocationChangedArg0, onLocationChangedLocation, onLocationChangedArg0, onActivityResultInt, onActivityResultRequestcode, onActivityResultResultcode, onActivityResultIntent, onActivityResultData, onLocationChangedLocation, onLocationChangedArg0, onCreateBundle, onCreateSavedinstancestate
+         incoming flows: 
+         outgoing flows: MainActivityonCreate [num: 6 assets: onCreateBundle, onCreateSavedinstancestate, targets: MainActivity]
+     ], 
+     Process MainActivity[
+         responsibilities: [writeParcelString Forward:: writeParcelString],
+[writeParcelArg Forward:: writeParcelArg]
+         assets: clickButtonView, onClickArg0, onLocationChangedLocation, onLocationChangedArg0, onLocationChangedLocation, onLocationChangedArg0, onActivityResultInt, onActivityResultRequestcode, onActivityResultResultcode, onActivityResultIntent, onActivityResultData, onLocationChangedLocation, onLocationChangedArg0, onCreateBundle, onCreateSavedinstancestate, writeParcelString, writeParcelArg
+         incoming flows: 
+         outgoing flows: MainActivitywriteParcel [num: 5 assets: writeParcelString, writeParcelArg, targets: MainActivity]
+     ], 
+     Process Button1Listener[
+         responsibilities: [onClickArg0 Forward:: onClickArg0]
+         assets: clickButtonView, onClickArg0, onLocationChangedLocation, onLocationChangedArg0, onLocationChangedLocation, onLocationChangedArg0, onActivityResultInt, onActivityResultRequestcode, onActivityResultResultcode, onActivityResultIntent, onActivityResultData, onLocationChangedLocation, onLocationChangedArg0, onCreateBundle, onCreateSavedinstancestate, writeParcelString, writeParcelArg
+         incoming flows: 
+         outgoing flows: Button1ListeneronClick [num: 10 assets: onClickArg0, targets: TelephonyManager]
+     ], 
+     Process MainActivity[
+         responsibilities: [onCreateBundle Forward:: onCreateBundle],
+[onCreateSavedinstancestate Forward:: onCreateSavedinstancestate]
+         assets: clickButtonView, onClickArg0, onLocationChangedLocation, onLocationChangedArg0, onLocationChangedLocation, onLocationChangedArg0, onActivityResultInt, onActivityResultRequestcode, onActivityResultResultcode, onActivityResultIntent, onActivityResultData, onLocationChangedLocation, onLocationChangedArg0, onCreateBundle, onCreateSavedinstancestate, writeParcelString, writeParcelArg
+         incoming flows: 
+         outgoing flows: MainActivityonCreate [num: 4 assets: onCreateBundle, onCreateSavedinstancestate, targets: MainActivity]
+     ], 
+     Process MainActivity[
+         responsibilities: [writeParcelString Store::],
+[writeParcelArg Store::]
+         assets: clickButtonView, onClickArg0, onLocationChangedLocation, onLocationChangedArg0, onLocationChangedLocation, onLocationChangedArg0, onActivityResultInt, onActivityResultRequestcode, onActivityResultResultcode, onActivityResultIntent, onActivityResultData, onLocationChangedLocation, onLocationChangedArg0, onCreateBundle, onCreateSavedinstancestate, writeParcelString, writeParcelArg
+         incoming flows: "MainActivity.MainActivitywriteParcel"
+         outgoing flows: 
+     ], 
+     Process MainActivity[
+         responsibilities: [onCreateBundle Store::],
+[onCreateSavedinstancestate Store::],
+[onActivityResultInt Forward:: onActivityResultInt],
+[onActivityResultRequestcode Forward:: onActivityResultRequestcode],
+[onActivityResultResultcode Forward:: onActivityResultResultcode],
+[onActivityResultIntent Forward:: onActivityResultIntent],
+[onActivityResultData Forward:: onActivityResultData]
+         assets: clickButtonView, onClickArg0, onLocationChangedLocation, onLocationChangedArg0, onLocationChangedLocation, onLocationChangedArg0, onActivityResultInt, onActivityResultRequestcode, onActivityResultResultcode, onActivityResultIntent, onActivityResultData, onLocationChangedLocation, onLocationChangedArg0, onCreateBundle, onCreateSavedinstancestate, writeParcelString, writeParcelArg
+         incoming flows: "MainActivity.MainActivityonCreate"
+         outgoing flows: MainActivityonActivityResult [num: 1 assets: onActivityResultInt, onActivityResultRequestcode, onActivityResultResultcode, onActivityResultIntent, onActivityResultData, targets: MyLocationListener2]
+     ], 
+     Process MainActivity[
+         responsibilities: [onCreateBundle Store::],
+[onCreateSavedinstancestate Store::]
+         assets: clickButtonView, onClickArg0, onLocationChangedLocation, onLocationChangedArg0, onLocationChangedLocation, onLocationChangedArg0, onActivityResultInt, onActivityResultRequestcode, onActivityResultResultcode, onActivityResultIntent, onActivityResultData, onLocationChangedLocation, onLocationChangedArg0, onCreateBundle, onCreateSavedinstancestate, writeParcelString, writeParcelArg
+         incoming flows: "MainActivity.MainActivityonCreate"
+         outgoing flows: 
+     ], 
+     Process FieldSensitivity3[
+         responsibilities: [onCreateBundle Forward:: onCreateBundle],
+[onCreateSavedinstancestate Forward:: onCreateSavedinstancestate]
+         assets: clickButtonView, onClickArg0, onLocationChangedLocation, onLocationChangedArg0, onLocationChangedLocation, onLocationChangedArg0, onActivityResultInt, onActivityResultRequestcode, onActivityResultResultcode, onActivityResultIntent, onActivityResultData, onLocationChangedLocation, onLocationChangedArg0, onCreateBundle, onCreateSavedinstancestate, writeParcelString, writeParcelArg, onCreateBundle, onCreateSavedinstancestate
+         incoming flows: 
+         outgoing flows: FieldSensitivity3onCreate [num: 8 assets: onCreateBundle, onCreateSavedinstancestate, targets: Datacontainer]
+     ], 
+     Process Datacontainer[
+         responsibilities: [onCreateBundle Store::],
+[onCreateSavedinstancestate Store::]
+         assets: clickButtonView, onClickArg0, onLocationChangedLocation, onLocationChangedArg0, onLocationChangedLocation, onLocationChangedArg0, onActivityResultInt, onActivityResultRequestcode, onActivityResultResultcode, onActivityResultIntent, onActivityResultData, onLocationChangedLocation, onLocationChangedArg0, onCreateBundle, onCreateSavedinstancestate, writeParcelString, writeParcelArg, onCreateBundle, onCreateSavedinstancestate
+         incoming flows: "FieldSensitivity3.FieldSensitivity3onCreate"
+         outgoing flows: 
+     ], 
+]

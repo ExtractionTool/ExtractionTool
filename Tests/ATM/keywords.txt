@@ -1,0 +1,1 @@
+car,pin,money,keyboard,input,display,view,status,account,balance,amount,message,receipt,transaction

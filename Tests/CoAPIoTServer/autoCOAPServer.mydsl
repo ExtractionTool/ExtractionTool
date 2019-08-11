@@ -1,0 +1,68 @@
+EDFD Autocoapserver[
+ assets:
+     Asset updateDevicedata values: [H C] source: DeviceDataDAO targets: 
+     Asset serializeRawDataToHexStringByte values: [H C] source: ParserHelper targets: 
+     Asset serializeRawDataToHexStringData values: [H C] source: ParserHelper targets: 
+     Asset handleGETCoapexchange values: [H C] source: ConfigurationResource targets: 
+     Asset insertDeviceconfig values: [H C] source: DeviceConfigDAO targets: 
+     Asset getSessionInteger values: [H C] source: SessionHolder targets: 
+     Asset getSessionToken values: [H C] source: SessionHolder targets: 
+     Asset handlePOSTCoapexchange values: [H C] source: LoginResource targets: 
+ elements:
+     Process SessionHolder[
+         responsibilities: [getSessionInteger Forward:: getSessionInteger],
+[getSessionToken Forward:: getSessionToken]
+         assets: getSessionInteger, getSessionToken
+         incoming flows: 
+         outgoing flows: SessionHoldergetSession [num: 5 assets: getSessionInteger, getSessionToken, targets: FirmwareDataMapper]
+     ], 
+     Process DeviceDataMapper[
+         responsibilities: [updateDevicedata Store::]
+         assets: getSessionInteger, getSessionToken, updateDevicedata
+         incoming flows: "DeviceDataDAO.DeviceDataDAOupdate"
+         outgoing flows: 
+     ], 
+     Process LoginResource[
+         responsibilities: [handlePOSTCoapexchange Forward:: handlePOSTCoapexchange]
+         assets: getSessionInteger, getSessionToken, updateDevicedata, handlePOSTCoapexchange
+         incoming flows: 
+         outgoing flows: LoginResourcehandlePOST [num: 6 assets: handlePOSTCoapexchange, targets: FirmwareDataMapper]
+     ], 
+     Process FirmwareDataMapper[
+         responsibilities: [handleGETCoapexchange Store::],
+[insertDeviceconfig Store::],
+[getSessionInteger Store::],
+[getSessionToken Store::],
+[handlePOSTCoapexchange Store::]
+         assets: getSessionInteger, getSessionToken, updateDevicedata, handlePOSTCoapexchange, handleGETCoapexchange, insertDeviceconfig
+         incoming flows: "ConfigurationResource.ConfigurationResourcehandleGET", "DeviceConfigDAO.DeviceConfigDAOinsert", "SessionHolder.SessionHoldergetSession", "LoginResource.LoginResourcehandlePOST"
+         outgoing flows: 
+     ], 
+     Process DeviceConfigDAO[
+         responsibilities: [serializeRawDataToHexStringByte Store::],
+[serializeRawDataToHexStringData Store::],
+[insertDeviceconfig Forward:: insertDeviceconfig]
+         assets: getSessionInteger, getSessionToken, updateDevicedata, handlePOSTCoapexchange, handleGETCoapexchange, insertDeviceconfig, serializeRawDataToHexStringByte, serializeRawDataToHexStringData
+         incoming flows: "ParserHelper.ParserHelperserializeRawDataToHexString"
+         outgoing flows: DeviceConfigDAOinsert [num: 4 assets: insertDeviceconfig, targets: FirmwareDataMapper]
+     ], 
+     Process ParserHelper[
+         responsibilities: [serializeRawDataToHexStringByte Forward:: serializeRawDataToHexStringByte],
+[serializeRawDataToHexStringData Forward:: serializeRawDataToHexStringData]
+         assets: getSessionInteger, getSessionToken, updateDevicedata, handlePOSTCoapexchange, handleGETCoapexchange, insertDeviceconfig, serializeRawDataToHexStringByte, serializeRawDataToHexStringData
+         incoming flows: 
+         outgoing flows: ParserHelperserializeRawDataToHexString [num: 2 assets: serializeRawDataToHexStringByte, serializeRawDataToHexStringData, targets: DeviceConfigDAO]
+     ], 
+     Process ConfigurationResource[
+         responsibilities: [handleGETCoapexchange Forward:: handleGETCoapexchange]
+         assets: getSessionInteger, getSessionToken, updateDevicedata, handlePOSTCoapexchange, handleGETCoapexchange, insertDeviceconfig, serializeRawDataToHexStringByte, serializeRawDataToHexStringData
+         incoming flows: 
+         outgoing flows: ConfigurationResourcehandleGET [num: 3 assets: handleGETCoapexchange, targets: FirmwareDataMapper]
+     ], 
+     Process DeviceDataDAO[
+         responsibilities: [updateDevicedata Forward:: updateDevicedata]
+         assets: getSessionInteger, getSessionToken, updateDevicedata, handlePOSTCoapexchange, handleGETCoapexchange, insertDeviceconfig, serializeRawDataToHexStringByte, serializeRawDataToHexStringData
+         incoming flows: 
+         outgoing flows: DeviceDataDAOupdate [num: 1 assets: updateDevicedata, targets: DeviceDataMapper]
+     ], 
+]
